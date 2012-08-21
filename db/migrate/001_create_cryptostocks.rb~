@@ -1,0 +1,9 @@
+class CreateCryptostocks < ActiveRecord::Migration
+  def change
+    create_table :cryptostocks do |t|
+
+
+    end
+
+  end
+end

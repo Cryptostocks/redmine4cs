@@ -1,0 +1,31 @@
+<h2>Cryptostocks Ticker Information</h2>
+<%if @is_listed.nil?%>
+Ticker is not listed on Cryptostocks.com
+<%else%>
+<div id="chart_div" style="height:300px;width:800px;"></div><br/>
+<div id="t1"></div>
+<div od="orderbook"></div><br/>
+<table>
+<tr><td>Number shares held publicly</td><td style="width:20px"></td><td><%=@number_public_shares%></td></tr>
+<tr><td>Bid/Ask/Last</td><td></td><td><%=@highest_bid%> <%=@currency%> / <%=@lowest_ask%> <%=@currency%> / <%=@last_price%> <%=@currency%></td></tr>
+<tr><td>Volume 24h/5d/30d</td><td></td><td><%=@volume24h%> <%=@currency%> / <%=@volume5d%> <%=@currency%> / <%=@volume30d%> <%=@currency%></td></tr>
+<tr><td>Market capitalization</td><td></td><td><%=@last_price.to_d*@number_public_shares.to_d%> <%=@currency%></td></tr>
+</table>
+<br/><br/>
+<small><a href="https://cryptostocks.com">Trade on Cryptostocks.com</a></small>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization","1",{packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+function drawChart() {
+var data2 = new google.visualization.DataTable();
+data2.addColumn('datetime','Year');
+data2.addColumn('number','Ticker');
+data2.addRows([<%f=1%><%for d in @orderexecutions%><%if f == 0%>,<%else%><%f=0%><%end%>[new Date(<%=d[0]%>),<%=d[1]%>]<%end%>]);
+
+var chart2 = new google.visualization.LineChart(document.getElementById('chart_div'));
+chart2.draw(data2,{width:800,height:300,title:"<%=@ticker%>",legend:'none'});
+}
+</script>
+<%end%>
