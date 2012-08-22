@@ -1,3 +1,0 @@
-class Cryptostocks < ActiveRecord::Base
-  unloadable
-end
